@@ -23,7 +23,7 @@ namespace testrpg.Controllers
         public async Task<ActionResult<ServiceResponse<List<GetCharacterDto>>>> Get() {
             return Ok(await _characterService.GetAllCharacters());
         }
-        [HttpGet("{Id}")]
+        [HttpGet("GetOne")]
 
         public async Task<ActionResult<ServiceResponse<GetCharacterDto>>> GetsingleCharacter(int id) 
         { 
