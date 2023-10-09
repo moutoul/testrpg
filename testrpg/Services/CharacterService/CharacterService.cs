@@ -56,10 +56,11 @@ namespace testrpg.Services.CharacterService
         public async Task<ServiceResponse<GetCharacterDto>> UpdateCharacter(UpdateCharacterDto updatedCharacter)
         {
             ServiceResponse<GetCharacterDto> serviceresponse = new ServiceResponse<GetCharacterDto>();
+
             try
             {
                 
-                Character character = await _context.Characters
+                var character = await _context.Characters
                     .FirstOrDefaultAsync(c => c.Id.Equals(updatedCharacter.Id));
 
 
@@ -69,7 +70,9 @@ namespace testrpg.Services.CharacterService
                 character.Intelligence = updatedCharacter.Intelligence;
                 character.Hitpoints = updatedCharacter.Hitpoints;
                 character.Class = updatedCharacter.Class;
+
                 await _context.SaveChangesAsync();
+                 
                 serviceresponse.Data = _mapper.Map<GetCharacterDto>(character);
 
             }
@@ -89,9 +92,10 @@ namespace testrpg.Services.CharacterService
             try
             {
 
-                Character character = characters.First(c => c.Id.Equals(id));
-                characters.Remove(character);
-                serviceresponse.Data = characters.Select(c => _mapper.Map<GetCharacterDto>(c)).ToList();
+                Character character = await _context.Characters.FirstAsync(c => c.Id.Equals(id));
+                _context.Characters.Remove(character);
+                await _context.SaveChangesAsync();
+                serviceresponse.Data = _context.Characters.Select(c => _mapper.Map<GetCharacterDto>(c)).ToList();
 
             }
 
