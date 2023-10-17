@@ -1,11 +1,15 @@
 ﻿
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using System.Collections.Generic;
+using System.Security.Claims;
+using testrpg.Models;
 using testrpg.Services.CharacterService;
 
 namespace testrpg.Controllers
 {
+    [Authorize]
     [Route("api/[controller]")]
     [ApiController]
     public class CharacterController : ControllerBase
@@ -17,16 +21,18 @@ namespace testrpg.Controllers
         {
            _characterService = characterService;
         }
-
+        //[AllowAnonymous]
         [HttpGet("GetAll")]
 
         public async Task<ActionResult<ServiceResponse<List<GetCharacterDto>>>> Get() {
+           
             return Ok(await _characterService.GetAllCharacters());
         }
         [HttpGet("{id}")]
 
         public async Task<ActionResult<ServiceResponse<GetCharacterDto>>> GetsingleCharacter(int id) 
-        { 
+        {
+           
             return Ok(await _characterService.GetCharacterById(id)); 
         }
 
@@ -51,6 +57,13 @@ namespace testrpg.Controllers
                 return NotFound();
             }
             return Ok(await _characterService.UpdateCharacter(updatedCharacter));
+        }
+
+        [HttpPost("Skill")]
+
+        public async Task<ActionResult<ServiceResponse<GetCharacterDto>>> AddCharacterSkill(AddCharacterSkillDto newCharacterSkill)
+        {
+            return Ok(await _characterService.AddCharacterSkills(newCharacterSkill));
         }
     }
 }

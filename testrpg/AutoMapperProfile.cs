@@ -1,4 +1,7 @@
-﻿namespace testrpg
+﻿using testrpg.Dtos.Skills;
+using testrpg.Dtos.Weapon;
+
+namespace testrpg
 {
     public class AutoMapperProfile:Profile
     {
@@ -7,7 +10,8 @@
             CreateMap<Character, GetCharacterDto>();
             CreateMap<AddCharacterDto, Character>();
             CreateMap<UpdateCharacterDto, Character>();
-           
+            CreateMap<Weapon, GetWeaponDto>();
+            CreateMap<Skill, GetSkillDto>();
         }
     }
 }
